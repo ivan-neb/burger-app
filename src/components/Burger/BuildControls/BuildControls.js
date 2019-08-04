@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
+import convertToDec from '../../../util/convertToDec';
 
 const controls = [
   { label: 'Salad', type: 'salad' },
@@ -12,7 +13,7 @@ const controls = [
 const buildControls = ({ clicked, disabledInfo, totalPrice, purchasable, ordered }) => (
   <div className={classes.BuildControls}>
     <p>
-      Total price: <strong>${Math.abs(totalPrice).toFixed(2)}</strong>
+      Total price: <strong>{convertToDec(totalPrice)}</strong>
     </p>
     {controls.map(({ label, type }) => (
       <BuildControl
