@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Aux';
-import Burger from '../../components/Burger/Burger';
+import Burger from '../../components/Burger/BurgerImage/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 const INGREDIENT_PRICES = {
@@ -27,29 +27,42 @@ class BurgerBuilder extends Component {
       meat: 0,
     },
     totalPrice: 0,
+    purchasable: false,
   };
 
   addOrRemoveIngredientHandler = (type, increment) => {
     const oldCount = this.state.ingredients[type];
     const newCount = oldCount + increment < 0 ? 0 : oldCount + increment;
+
     const updatedIngredients = {
       ...this.state.ingredients,
       [type]: newCount,
     };
+
     const updatedPrice = this.state.totalPrice + increment * INGREDIENT_PRICES[type];
-    this.setState({ ingredients: updatedIngredients, totalPrice: updatedPrice });
+
+    const purchasable =
+      Object.values(updatedIngredients).reduce((prev, curr) => prev + curr, 0) > 0;
+
+    this.setState({
+      ingredients: updatedIngredients,
+      totalPrice: updatedPrice,
+      purchasable: purchasable,
+    });
   };
 
   render() {
     const disabledInfo = disabledOrNot(this.state.ingredients);
+    const { ingredients, totalPrice, purchasable } = this.state;
 
     return (
       <Aux>
-        <Burger ingredients={this.state.ingredients} />
+        <Burger ingredients={ingredients} />
         <BuildControls
           clicked={this.addOrRemoveIngredientHandler}
           disabledInfo={disabledInfo}
-          totalPrice={this.state.totalPrice}
+          totalPrice={totalPrice}
+          purchasable={purchasable}
         />
       </Aux>
     );
