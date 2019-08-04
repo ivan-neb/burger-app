@@ -10,6 +10,14 @@ const INGREDIENT_PRICES = {
   bacon: 0.7,
 };
 
+export const disabledOrNot = ingredients => {
+  const disabledOrNot = { ...ingredients };
+  for (let key in disabledOrNot) {
+    disabledOrNot[key] = disabledOrNot[key] <= 0;
+  }
+  return disabledOrNot;
+};
+
 class BurgerBuilder extends Component {
   state = {
     ingredients: {
@@ -33,10 +41,12 @@ class BurgerBuilder extends Component {
   };
 
   render() {
+    const disabledInfo = disabledOrNot(this.state.ingredients);
+
     return (
       <Aux>
         <Burger ingredients={this.state.ingredients} />
-        <BuildControls clicked={this.addOrRemoveIngredientHandler} />
+        <BuildControls clicked={this.addOrRemoveIngredientHandler} disabledInfo={disabledInfo} />
       </Aux>
     );
   }

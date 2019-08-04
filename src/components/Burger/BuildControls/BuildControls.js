@@ -9,14 +9,15 @@ const controls = [
   { label: 'Meat', type: 'meat' },
 ];
 
-const buildControls = ({ clicked }) => (
+const buildControls = ({ clicked, disabledInfo }) => (
   <div className={classes.BuildControls}>
-    {controls.map(ctrl => (
+    {controls.map(({ label, type }) => (
       <BuildControl
-        key={ctrl.label}
-        label={ctrl.label}
-        type={ctrl.type}
+        key={label}
+        label={label}
+        type={type}
         clicked={clicked}
+        disabled={disabledInfo[type]}
       ></BuildControl>
     ))}
   </div>
