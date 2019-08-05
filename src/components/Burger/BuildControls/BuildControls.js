@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
 import convertToDec from '../../../util/convertToDec';
+import PropTypes from 'prop-types';
 
 const controls = [
   { label: 'Salad', type: 'salad' },
@@ -29,5 +30,13 @@ const buildControls = ({ clicked, disabledInfo, totalPrice, purchasable, ordered
     </button>
   </div>
 );
+
+buildControls.propTypes = {
+  clicked: PropTypes.func,
+  disabledInfo: PropTypes.object,
+  ordered: PropTypes.func,
+  purchasable: PropTypes.bool,
+  totalPrice: PropTypes.number,
+};
 
 export default buildControls;

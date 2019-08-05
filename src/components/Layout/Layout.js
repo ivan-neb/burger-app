@@ -3,6 +3,7 @@ import Aux from '../../hoc/Aux';
 import classes from './Layout.module.css';
 import Toolbar from '../Navigation/Toolbar/Toolbar';
 import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
+import PropTypes from 'prop-types';
 
 class Layout extends React.Component {
   state = {
@@ -32,5 +33,9 @@ class Layout extends React.Component {
     );
   };
 }
+
+Layout.propTypes = {
+  children: PropTypes.node,
+};
 
 export default Layout;

@@ -4,6 +4,7 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './SideDrawer.module.css';
 import BackDrop from '../../UI/Backdrop/Backdrop';
 import Aux from '../../../hoc/Aux';
+import PropTypes from 'prop-types';
 
 const sideDrawer = ({ closed, open }) => {
   return (
@@ -19,6 +20,11 @@ const sideDrawer = ({ closed, open }) => {
       </div>
     </Aux>
   );
+};
+
+sideDrawer.propTypes = {
+  closed: PropTypes.func,
+  open: PropTypes.bool,
 };
 
 export default sideDrawer;
