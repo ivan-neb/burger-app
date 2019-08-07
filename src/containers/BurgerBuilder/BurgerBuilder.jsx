@@ -4,6 +4,7 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders';
 
 const INGREDIENT_PRICES = {
   salad: 50,
@@ -13,11 +14,12 @@ const INGREDIENT_PRICES = {
 };
 
 export const disabledOrNot = ingredients => {
-  const disabledOrNot = { ...ingredients };
-  for (let key in disabledOrNot) {
-    disabledOrNot[key] = disabledOrNot[key] <= 0;
+  const disabledOrNotObject = { ...ingredients };
+  // eslint-disable-next-line no-restricted-syntax, guard-for-in
+  for (const key in disabledOrNotObject) {
+    disabledOrNotObject[key] = disabledOrNotObject[key] <= 0;
   }
-  return disabledOrNot;
+  return disabledOrNotObject;
 };
 
 class BurgerBuilder extends Component {
@@ -34,15 +36,17 @@ class BurgerBuilder extends Component {
   };
 
   addOrRemoveIngredientHandler = (type, increment) => {
-    const oldCount = this.state.ingredients[type];
+    const { ingredients, totalPrice } = this.state;
+
+    const oldCount = ingredients[type];
     const newCount = oldCount + increment < 0 ? 0 : oldCount + increment;
 
     const updatedIngredients = {
-      ...this.state.ingredients,
+      ...ingredients,
       [type]: newCount,
     };
 
-    const updatedPrice = this.state.totalPrice + increment * INGREDIENT_PRICES[type];
+    const updatedPrice = totalPrice + increment * INGREDIENT_PRICES[type];
 
     const purchasable =
       Object.values(updatedIngredients).reduce((prev, curr) => prev + curr, 0) > 0;
@@ -50,7 +54,7 @@ class BurgerBuilder extends Component {
     this.setState({
       ingredients: updatedIngredients,
       totalPrice: updatedPrice,
-      purchasable: purchasable,
+      purchasable,
     });
   };
 
@@ -63,12 +67,31 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    alert('You continued');
+    const { ingredients, totalPrice } = this.state;
+    const order = {
+      ingredients,
+      price: totalPrice,
+      customer: {
+        name: 'Ivan',
+        address: {
+          street: 'Basket Street',
+          zipCode: '12345',
+          country: 'Germany',
+        },
+        email: 'test@test.com',
+      },
+      deliveryMethod: 'fastest',
+    };
+    axios
+      .post('/orders.json', order)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   };
 
   render() {
-    const disabledInfo = disabledOrNot(this.state.ingredients);
     const { ingredients, totalPrice, purchasable, purchasing } = this.state;
+
+    const disabledInfo = disabledOrNot(ingredients);
 
     return (
       <Aux>
