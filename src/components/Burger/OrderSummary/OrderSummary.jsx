@@ -1,5 +1,5 @@
 import React from 'react';
-import Aux from '../../../hoc/Aux/Aux';
+import Aux from '../../../hoc/Auxiliary/Auxiliary';
 import Button from '../../UI/Button/Button';
 import convertToDec from '../../../util/convertToDec';
 import PropTypes from 'prop-types';
