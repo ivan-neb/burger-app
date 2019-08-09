@@ -17,7 +17,6 @@ const INGREDIENT_PRICES = {
 
 const disabledOrNot = ingredients => {
   const disabledOrNotObject = { ...ingredients };
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
   for (const key in disabledOrNotObject) {
     disabledOrNotObject[key] = disabledOrNotObject[key] <= 0;
   }
