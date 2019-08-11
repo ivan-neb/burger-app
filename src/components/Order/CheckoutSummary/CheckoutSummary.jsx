@@ -4,17 +4,17 @@ import Burger from '../../Burger/Burger';
 import Button from '../../UI/Button/Button';
 
 const checkoutSummary = props => {
-  const { ingredients } = props;
+  const { ingredients, checkoutCancelled, checkoutContinued } = props;
 
   return (
     <div className={classes.CheckoutSummary}>
       <h1>We hope it tastes well!</h1>
       <div style={{ width: '100%', margin: 'auto' }}>
         <Burger ingredients={ingredients} />
-        <Button btnType='Danger' clicked={() => {}}>
+        <Button btnType='Danger' clicked={checkoutCancelled}>
           CANCEL
         </Button>
-        <Button btnType='Success' clicked={() => {}}>
+        <Button btnType='Success' clicked={checkoutContinued}>
           SUBMIT
         </Button>
       </div>
