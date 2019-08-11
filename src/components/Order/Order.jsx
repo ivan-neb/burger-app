@@ -1,6 +1,7 @@
 import React from 'react';
 
 import classes from './Order.module.css';
+import convertToDec from '../../util/convertToDec';
 
 const objToString = obj => {
   if (typeof obj === 'string') {
@@ -44,7 +45,7 @@ const order = props => {
         <strong>Ingredients</strong>: {ingredientsString}
       </p>
       <p>
-        Price: <strong>{price}</strong>
+        Price: <strong>{convertToDec(price)}</strong>
       </p>
     </div>
   );
