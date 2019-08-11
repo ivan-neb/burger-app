@@ -17,5 +17,5 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react'],
-  rules: { 'react/prop-types': off, 'react/jsx-one-expression-per-line': off },
+  rules: { 'react/prop-types': [0], 'react/jsx-one-expression-per-line': [0], 'guard-for-in': [0] },
 };
