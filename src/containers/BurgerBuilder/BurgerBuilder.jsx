@@ -15,9 +15,36 @@ const INGREDIENT_PRICES = {
   bacon: 70,
 };
 
+const getNewState = (oldState = {}, type, increment) => {
+  const { totalPrice } = oldState;
+  let { ingredients } = oldState;
+  if (ingredients == null) {
+    ingredients = {};
+  }
+
+  const oldCount = ingredients[type] || 0;
+  const newCount = oldCount + increment < 0 ? 0 : oldCount + increment;
+
+  const updatedIngredients = {
+    ...ingredients,
+    [type]: newCount,
+  };
+
+  const updatedPrice = totalPrice + increment * INGREDIENT_PRICES[type];
+
+  const newPurchasable =
+    Object.values(updatedIngredients).reduce((prev, curr) => prev + curr, 0) > 0;
+
+  return {
+    ingredients: updatedIngredients,
+    totalPrice: updatedPrice,
+    purchasable: newPurchasable,
+  };
+};
+
 const disabledOrNot = ingredients => {
   const disabledOrNotObject = { ...ingredients };
-  // eslint-disable-next-line guard-for-in, no-restricted-syntax
+  // eslint-disable-next-line no-restricted-syntax
   for (const key in disabledOrNotObject) {
     disabledOrNotObject[key] = disabledOrNotObject[key] <= 0;
   }
@@ -26,7 +53,7 @@ const disabledOrNot = ingredients => {
 
 class BurgerBuilder extends Component {
   state = {
-    ingredients: { meat: 0, bacon: 0, cheese: 0, salad: 0 },
+    ingredients: null,
     totalPrice: 0,
     purchasable: false,
     purchasing: false,
@@ -41,33 +68,15 @@ class BurgerBuilder extends Component {
         // eslint-disable-next-line no-restricted-syntax
         for (const ingredient in data) {
           const amount = data[ingredient];
-          this.addOrRemoveIngredientHandler(ingredient, amount);
+          this.setState(oldState => getNewState(oldState, ingredient, amount));
         }
       })
       .catch(() => this.setState({ error: true }));
   }
 
   addOrRemoveIngredientHandler = (type, increment) => {
-    const { ingredients, totalPrice } = this.state;
-
-    const oldCount = ingredients[type];
-    const newCount = oldCount + increment < 0 ? 0 : oldCount + increment;
-
-    const updatedIngredients = {
-      ...ingredients,
-      [type]: newCount,
-    };
-
-    const updatedPrice = totalPrice + increment * INGREDIENT_PRICES[type];
-
-    const purchasable =
-      Object.values(updatedIngredients).reduce((prev, curr) => prev + curr, 0) > 0;
-
-    this.setState({
-      ingredients: updatedIngredients,
-      totalPrice: updatedPrice,
-      purchasable,
-    });
+    const newState = getNewState(this.state, type, increment);
+    this.setState(newState);
   };
 
   purchaseHandler = () => {
@@ -79,27 +88,6 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    // this.setState({ loading: true });
-    // const { ingredients, totalPrice } = this.state;
-    // const order = {
-    //   ingredients,
-    //   price: totalPrice,
-    //   customer: {
-    //     name: 'Ivan',
-    //     address: {
-    //       street: 'Basket Street',
-    //       zipCode: '12345',
-    //       country: 'Germany',
-    //     },
-    //     email: 'test@test.com',
-    //   },
-    //   deliveryMethod: 'fastest',
-    // };
-    // axios
-    //   .post('/orders.json', order)
-    //   .then(() => this.setState({ loading: false, purchasing: false }))
-    //   .catch(() => this.setState({ loading: false, purchasing: false }));
-
     const { history } = this.props;
     history.push('/checkout');
   };
