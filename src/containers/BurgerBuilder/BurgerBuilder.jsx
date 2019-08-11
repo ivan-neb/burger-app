@@ -17,6 +17,7 @@ const INGREDIENT_PRICES = {
 
 const disabledOrNot = ingredients => {
   const disabledOrNotObject = { ...ingredients };
+  // eslint-disable-next-line guard-for-in, no-restricted-syntax
   for (const key in disabledOrNotObject) {
     disabledOrNotObject[key] = disabledOrNotObject[key] <= 0;
   }
@@ -39,7 +40,7 @@ class BurgerBuilder extends Component {
       .then(({ data }) => {
         this.setState({ ingredients: data });
       })
-      .catch(err => this.setState({ error: true }));
+      .catch(() => this.setState({ error: true }));
   }
 
   addOrRemoveIngredientHandler = (type, increment) => {
