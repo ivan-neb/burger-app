@@ -90,9 +90,9 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    const { ingredients } = this.state;
+    const { ingredients, totalPrice } = this.state;
     const { history } = this.props;
-    const searchString = queryString.stringify(ingredients);
+    const searchString = queryString.stringify({ ...ingredients, price: totalPrice });
 
     history.push({
       pathname: '/checkout',
