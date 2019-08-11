@@ -26,7 +26,7 @@ const disabledOrNot = ingredients => {
 
 class BurgerBuilder extends Component {
   state = {
-    ingredients: null,
+    ingredients: { meat: 0, bacon: 0, cheese: 0, salad: 0 },
     totalPrice: 0,
     purchasable: false,
     purchasing: false,
@@ -38,7 +38,11 @@ class BurgerBuilder extends Component {
     axios
       .get('/ingredients.json')
       .then(({ data }) => {
-        this.setState({ ingredients: data });
+        // eslint-disable-next-line no-restricted-syntax
+        for (const ingredient in data) {
+          const amount = data[ingredient];
+          this.addOrRemoveIngredientHandler(ingredient, amount);
+        }
       })
       .catch(() => this.setState({ error: true }));
   }
