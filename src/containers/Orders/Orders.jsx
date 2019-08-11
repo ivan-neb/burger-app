@@ -7,9 +7,9 @@ class Orders extends React.Component {
 
   render() {
     const { orders } = this.state;
-    const ordersElements = orders.map(x => x);
+    // const ordersElements = orders.map(x => x);
 
-    return <div>{ordersElements}</div>;
+    return <div>{null}</div>;
   }
 }
 
