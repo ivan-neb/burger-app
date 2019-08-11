@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './Checkout.module.css';
+// import classes from './Checkout.module.css';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 
 class Checkout extends React.Component {
@@ -13,9 +13,11 @@ class Checkout extends React.Component {
   };
 
   render() {
+    const { ingredients } = this.state;
+
     return (
       <div>
-        <CheckoutSummary ingredients={this.state.ingredients} />
+        <CheckoutSummary ingredients={ingredients} />
       </div>
     );
   }
