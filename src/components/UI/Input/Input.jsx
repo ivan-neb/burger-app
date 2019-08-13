@@ -3,21 +3,33 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const Input = props => {
-  const { label, elementType, elementConfig, value, name } = props;
+  const { label, elementType, elementConfig, value, name, changed } = props;
 
   let inputElement = null;
 
   switch (elementType) {
     case 'input': {
       inputElement = (
-        <input className={classes.InputElement} id={name} {...elementConfig} value={value} />
+        <input
+          className={classes.InputElement}
+          name={name}
+          {...elementConfig}
+          value={value}
+          onChange={changed}
+        />
       );
       break;
     }
 
     case 'textarea': {
       inputElement = (
-        <textarea className={classes.InputElement} id={name} {...elementConfig} value={value} />
+        <textarea
+          className={classes.InputElement}
+          name={name}
+          {...elementConfig}
+          value={value}
+          onChange={changed}
+        />
       );
       break;
     }
@@ -26,13 +38,13 @@ const Input = props => {
       const { options } = elementConfig;
 
       const optionElements = options.map(option => (
-        <option value={option.value} key={option.value}>
+        <option value={option.value} key={option.value} onChange={changed}>
           {option.displayValue}
         </option>
       ));
 
       inputElement = (
-        <select className={classes.InputElement} id={name} value={value}>
+        <select className={classes.InputElement} name={name} value={value} onChange={changed}>
           {optionElements}
         </select>
       );
@@ -42,7 +54,7 @@ const Input = props => {
 
     default: {
       inputElement = (
-        <input className={classes.InputElement} id={name} {...elementConfig} value={value} />
+        <input className={classes.InputElement} name={name} {...elementConfig} value={value} />
       );
     }
   }

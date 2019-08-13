@@ -105,6 +105,14 @@ class ContactData extends React.Component {
     //   .catch(() => this.setState({ loading: false }));
   };
 
+  changeHandler = event => {
+    const { name, value } = event.target;
+    const { orderForm } = this.state;
+    const updatedOrderForm = JSON.parse(JSON.stringify(orderForm));
+    updatedOrderForm[name].value = value;
+    this.setState({ orderForm: updatedOrderForm });
+  };
+
   render() {
     const { loading, orderForm } = this.state;
 
@@ -118,6 +126,7 @@ class ContactData extends React.Component {
           name={objKey}
           key={objKey}
           label={label}
+          changed={this.changeHandler}
         />
       );
     });
