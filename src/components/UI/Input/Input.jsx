@@ -5,17 +5,47 @@ import classes from './Input.module.css';
 const Input = props => {
   const { label, elementType, elementConfig, value, name } = props;
 
-  const randomID = Math.random().toString();
-  const defaultInput = (
-    <input className={classes.InputElement} id={name} {...elementConfig} value={value} />
-  );
-  const types = {
-    input: defaultInput,
-    textarea: (
-      <textarea className={classes.InputElement} id={randomID} {...elementConfig} value={value} />
-    ),
-  };
-  const inputElement = types[elementType] || defaultInput;
+  let inputElement = null;
+
+  switch (elementType) {
+    case 'input': {
+      inputElement = (
+        <input className={classes.InputElement} id={name} {...elementConfig} value={value} />
+      );
+      break;
+    }
+
+    case 'textarea': {
+      inputElement = (
+        <textarea className={classes.InputElement} id={name} {...elementConfig} value={value} />
+      );
+      break;
+    }
+
+    case 'select': {
+      const { options } = elementConfig;
+
+      const optionElements = options.map(option => (
+        <option value={option.value} key={option.value}>
+          {option.displayValue}
+        </option>
+      ));
+
+      inputElement = (
+        <select className={classes.InputElement} id={name} value={value}>
+          {optionElements}
+        </select>
+      );
+
+      break;
+    }
+
+    default: {
+      inputElement = (
+        <input className={classes.InputElement} id={name} {...elementConfig} value={value} />
+      );
+    }
+  }
 
   return (
     <div className={classes.Input}>

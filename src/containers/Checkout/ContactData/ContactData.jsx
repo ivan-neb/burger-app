@@ -69,7 +69,6 @@ class ContactData extends React.Component {
             },
           ],
         },
-        value: '',
       },
     },
     loading: false,
