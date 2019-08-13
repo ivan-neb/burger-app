@@ -69,40 +69,31 @@ class ContactData extends React.Component {
             },
           ],
         },
+        value: 'cheapest',
       },
     },
     loading: false,
   };
 
   orderHandler = event => {
-    // event.preventDefault();
-    // const { ingredients, price } = this.props;
-    // const { orderForm } = this.state;
-    // const { customer, deliveryMethod } = orderForm;
-    // const { name, address, email } = customer;
-    // const { street, zipCode, country } = address;
-    // this.setState({ loading: true });
-    // const order = {
-    //   ingredients,
-    //   price,
-    //   customer: {
-    //     name,
-    //     address: {
-    //       street,
-    //       postalCode,
-    //     },
-    //     email,
-    //   },
-    //   deliveryMethod: 'fastest',
-    // };
-    // axios
-    //   .post('/orders.json', order)
-    //   .then(() => {
-    //     this.setState({ loading: false });
-    //     const { history } = this.props;
-    //     history.push('/');
-    //   })
-    //   .catch(() => this.setState({ loading: false }));
+    event.preventDefault();
+    const { orderForm } = this.state;
+    const { ingredients, price } = this.props;
+
+    const orderData = Object.entries(orderForm)
+      .map(([name, value]) => [name, value.value])
+      .reduce((object, [name, value]) => ({ ...object, [name]: value }), {});
+
+    const order = { ingredients, price, orderData };
+
+    axios
+      .post('/orders.json', order)
+      .then(() => {
+        this.setState({ loading: false });
+        const { history } = this.props;
+        history.push('/');
+      })
+      .catch(() => this.setState({ loading: false }));
   };
 
   changeHandler = event => {
@@ -132,9 +123,9 @@ class ContactData extends React.Component {
     });
 
     let form = (
-      <form>
+      <form onSubmit={this.orderHandler}>
         {formElementsArray}
-        <Button btnType='Success' clicked={this.orderHandler}>
+        <Button btnType='Success' type='submit'>
           ORDER
         </Button>
       </form>
