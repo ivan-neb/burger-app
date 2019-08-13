@@ -10,6 +10,7 @@ class ContactData extends React.Component {
   state = {
     orderForm: {
       name: {
+        label: 'Name',
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -18,6 +19,7 @@ class ContactData extends React.Component {
         value: '',
       },
       street: {
+        label: 'Street',
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -26,6 +28,7 @@ class ContactData extends React.Component {
         value: '',
       },
       zipCode: {
+        label: 'ZIP Code',
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -34,6 +37,7 @@ class ContactData extends React.Component {
         value: '',
       },
       country: {
+        label: 'Country',
         elementType: 'input',
         elementConfig: {
           type: 'text',
@@ -42,6 +46,7 @@ class ContactData extends React.Component {
         value: '',
       },
       email: {
+        label: 'Email',
         elementType: 'input',
         elementConfig: {
           type: 'email',
@@ -50,6 +55,7 @@ class ContactData extends React.Component {
         value: '',
       },
       deliveryMethod: {
+        label: 'Delivery Method',
         elementType: 'select',
         elementConfig: {
           options: [
@@ -101,14 +107,25 @@ class ContactData extends React.Component {
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, orderForm } = this.state;
+
+    const formElementsArray = Object.entries(orderForm).map(([objKey, objValue]) => {
+      const { elementType, elementConfig, value, label } = objValue;
+      return (
+        <Input
+          elementType={elementType}
+          elementConfig={elementConfig}
+          value={value}
+          name={objKey}
+          key={objKey}
+          label={label}
+        />
+      );
+    });
 
     let form = (
       <form>
-        <Input inputtype='input' type='text' name='name' placeholder='Your Name' />
-        <Input inputtype='input' type='email' name='email' placeholder='Your Email' />
-        <Input inputtype='input' type='text' name='street' placeholder='Your Street' />
-        <Input inputtype='input' type='text' name='postalCode' placeholder='Your Postal Code' />
+        {formElementsArray}
         <Button btnType='Success' clicked={this.orderHandler}>
           ORDER
         </Button>

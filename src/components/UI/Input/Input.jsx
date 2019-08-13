@@ -3,11 +3,11 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const Input = props => {
-  const { label, elementType, elementConfig, value } = props;
+  const { label, elementType, elementConfig, value, name } = props;
 
   const randomID = Math.random().toString();
   const defaultInput = (
-    <input className={classes.InputElement} id={randomID} {...elementConfig} value={value} />
+    <input className={classes.InputElement} id={name} {...elementConfig} value={value} />
   );
   const types = {
     input: defaultInput,
@@ -19,7 +19,7 @@ const Input = props => {
 
   return (
     <div className={classes.Input}>
-      <label className={classes.Label} htmlFor={randomID}>
+      <label className={classes.Label} htmlFor={name}>
         {label}
       </label>
       {inputElement}
