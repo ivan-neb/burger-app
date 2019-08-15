@@ -17,6 +17,11 @@ class ContactData extends React.Component {
           placeholder: 'Your Name',
         },
         value: '',
+        validation: {
+          required: true,
+          minLength: 2,
+        },
+        valid: false,
       },
       street: {
         label: 'Street',
@@ -26,6 +31,10 @@ class ContactData extends React.Component {
           placeholder: 'Your Street',
         },
         value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       zipCode: {
         label: 'ZIP Code',
@@ -35,6 +44,10 @@ class ContactData extends React.Component {
           placeholder: 'Your Zip Code',
         },
         value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       country: {
         label: 'Country',
@@ -44,6 +57,10 @@ class ContactData extends React.Component {
           placeholder: 'Your Country',
         },
         value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       email: {
         label: 'Email',
@@ -53,6 +70,10 @@ class ContactData extends React.Component {
           placeholder: 'Your Email',
         },
         value: '',
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       deliveryMethod: {
         label: 'Delivery Method',
@@ -96,11 +117,27 @@ class ContactData extends React.Component {
       .catch(() => this.setState({ loading: false }));
   };
 
-  changeHandler = event => {
+  checkValidity = (value, rules) => {
+    let isValid = true;
+
+    if (rules.required && value.trim() !== '') {
+      isValid = false;
+    }
+
+    if (rules.minLength && value.trim().length < rules.minLength) {
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
+  inputChangeHandler = event => {
     const { name, value } = event.target;
     const { orderForm } = this.state;
     const updatedOrderForm = JSON.parse(JSON.stringify(orderForm));
     updatedOrderForm[name].value = value;
+    updatedOrderForm[name].valid = this.checkValidity(value, updatedOrderForm[name].validation);
+    console.log(updatedOrderForm[name]);
     this.setState({ orderForm: updatedOrderForm });
   };
 
@@ -108,7 +145,7 @@ class ContactData extends React.Component {
     const { loading, orderForm } = this.state;
 
     const formElementsArray = Object.entries(orderForm).map(([objKey, objValue]) => {
-      const { elementType, elementConfig, value, label } = objValue;
+      const { elementType, elementConfig, value, label, valid } = objValue;
       return (
         <Input
           elementType={elementType}
@@ -117,7 +154,8 @@ class ContactData extends React.Component {
           name={objKey}
           key={objKey}
           label={label}
-          changed={this.changeHandler}
+          changed={this.inputChangeHandler}
+          valid={valid}
         />
       );
     });
