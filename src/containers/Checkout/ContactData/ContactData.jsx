@@ -120,11 +120,10 @@ class ContactData extends React.Component {
   checkValidity = (value, rules) => {
     let isValid = true;
 
-    if (rules.required && value.trim() !== '') {
-      isValid = false;
-    }
-
-    if (rules.minLength && value.trim().length < rules.minLength) {
+    if (
+      (rules.required && value.trim() !== '') ||
+      (rules.minLength && value.trim().length >= rules.minLength)
+    ) {
       isValid = false;
     }
 
