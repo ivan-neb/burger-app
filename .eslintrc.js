@@ -22,5 +22,6 @@ module.exports = {
     'react/jsx-one-expression-per-line': [0],
     'guard-for-in': [0],
     'jsx-a11y/label-has-for': [0],
+    'no-restricted-syntax': [0],
   },
 };

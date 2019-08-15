@@ -96,9 +96,11 @@ class ContactData extends React.Component {
           ],
         },
         value: 'cheapest',
+        valid: true,
       },
     },
     loading: false,
+    formIsValid: false,
   };
 
   orderHandler = event => {
@@ -144,11 +146,19 @@ class ContactData extends React.Component {
     updatedOrderForm[name].value = value;
     updatedOrderForm[name].valid = this.checkValidity(value, updatedOrderForm[name].validation);
     updatedOrderForm[name].touched = true;
-    this.setState({ orderForm: updatedOrderForm });
+
+    let formIsValid = true;
+    for (const inputElement in updatedOrderForm) {
+      if (updatedOrderForm[inputElement].valid === false) {
+        formIsValid = false;
+      }
+    }
+
+    this.setState({ orderForm: updatedOrderForm, formIsValid });
   };
 
   render() {
-    const { loading, orderForm } = this.state;
+    const { loading, orderForm, formIsValid } = this.state;
 
     const formElementsArray = Object.entries(orderForm).map(([objKey, objValue]) => {
       const { elementType, elementConfig, value, label, valid, validation, touched } = objValue;
@@ -171,7 +181,7 @@ class ContactData extends React.Component {
     let form = (
       <form onSubmit={this.orderHandler}>
         {formElementsArray}
-        <Button btnType='Success' type='submit'>
+        <Button btnType='Success' disabled={!formIsValid} type='submit'>
           ORDER
         </Button>
       </form>
