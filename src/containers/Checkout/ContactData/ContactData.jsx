@@ -22,6 +22,7 @@ class ContactData extends React.Component {
           minLength: 2,
         },
         valid: false,
+        touched: false,
       },
       street: {
         label: 'Street',
@@ -35,6 +36,7 @@ class ContactData extends React.Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       zipCode: {
         label: 'ZIP Code',
@@ -48,6 +50,7 @@ class ContactData extends React.Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       country: {
         label: 'Country',
@@ -61,6 +64,7 @@ class ContactData extends React.Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       email: {
         label: 'Email',
@@ -74,6 +78,7 @@ class ContactData extends React.Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       deliveryMethod: {
         label: 'Delivery Method',
@@ -118,11 +123,13 @@ class ContactData extends React.Component {
   };
 
   checkValidity = (value, rules) => {
+    if (!rules) return true;
+
     let isValid = true;
 
     if (
-      (rules.required && value.trim() !== '') ||
-      (rules.minLength && value.trim().length >= rules.minLength)
+      (rules.required && value.trim() === '') ||
+      (rules.minLength && value.trim().length < rules.minLength)
     ) {
       isValid = false;
     }
@@ -136,7 +143,7 @@ class ContactData extends React.Component {
     const updatedOrderForm = JSON.parse(JSON.stringify(orderForm));
     updatedOrderForm[name].value = value;
     updatedOrderForm[name].valid = this.checkValidity(value, updatedOrderForm[name].validation);
-    console.log(updatedOrderForm[name]);
+    updatedOrderForm[name].touched = true;
     this.setState({ orderForm: updatedOrderForm });
   };
 
@@ -144,7 +151,7 @@ class ContactData extends React.Component {
     const { loading, orderForm } = this.state;
 
     const formElementsArray = Object.entries(orderForm).map(([objKey, objValue]) => {
-      const { elementType, elementConfig, value, label, valid } = objValue;
+      const { elementType, elementConfig, value, label, valid, validation, touched } = objValue;
       return (
         <Input
           elementType={elementType}
@@ -154,7 +161,9 @@ class ContactData extends React.Component {
           key={objKey}
           label={label}
           changed={this.inputChangeHandler}
-          valid={valid}
+          invalid={!valid}
+          shouldValidate={validation}
+          touched={touched}
         />
       );
     });

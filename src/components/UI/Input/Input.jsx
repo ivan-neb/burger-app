@@ -3,7 +3,22 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const Input = props => {
-  const { label, elementType, elementConfig, value, name, changed } = props;
+  const {
+    label,
+    elementType,
+    elementConfig,
+    value,
+    name,
+    changed,
+    invalid,
+    shouldValidate,
+    touched,
+  } = props;
+  const inputClasses = [classes.InputElement];
+
+  if (invalid && shouldValidate && touched) {
+    inputClasses.push(classes.Invalid);
+  }
 
   let inputElement = null;
 
@@ -11,7 +26,7 @@ const Input = props => {
     case 'input': {
       inputElement = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           name={name}
           {...elementConfig}
           value={value}
@@ -24,7 +39,7 @@ const Input = props => {
     case 'textarea': {
       inputElement = (
         <textarea
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           name={name}
           {...elementConfig}
           value={value}
@@ -44,7 +59,7 @@ const Input = props => {
       ));
 
       inputElement = (
-        <select className={classes.InputElement} name={name} value={value} onChange={changed}>
+        <select className={inputClasses.join(' ')} name={name} value={value} onChange={changed}>
           {optionElements}
         </select>
       );
@@ -54,7 +69,7 @@ const Input = props => {
 
     default: {
       inputElement = (
-        <input className={classes.InputElement} name={name} {...elementConfig} value={value} />
+        <input className={inputClasses.join(' ')} name={name} {...elementConfig} value={value} />
       );
     }
   }
