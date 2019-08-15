@@ -96,6 +96,8 @@ class ContactData extends React.Component {
           ],
         },
         value: 'cheapest',
+        validation: {},
+        touched: false,
         valid: true,
       },
     },
@@ -125,8 +127,6 @@ class ContactData extends React.Component {
   };
 
   checkValidity = (value, rules) => {
-    if (!rules) return true;
-
     let isValid = true;
 
     if (
